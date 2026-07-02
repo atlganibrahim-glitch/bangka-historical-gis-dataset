@@ -20,7 +20,7 @@ from osgeo import gdal
 gdal.UseExceptions()
 
 BASE     = os.path.dirname(os.path.abspath(__file__))
-ESKI_DIR = os.path.join(BASE, "ESKI_KALIBRE_HARITALAR")
+ESKI_DIR = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
 CSV_PATH = os.path.join(BASE, "bangka_dataset.csv")
 
 # ============================================================

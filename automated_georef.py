@@ -11,7 +11,7 @@ LAT_OFFSET = -0.01045
 # ==============================================================================
 
 INPUT_DIR = "." 
-OUTPUT_DIR = "YENI_KALIBRE_HARITALAR"
+OUTPUT_DIR = "GEOREF_FINAL_STANDARD_164"
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)

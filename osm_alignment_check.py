@@ -10,7 +10,7 @@ Yapılan işlem:
   karşılaştırarak sistematik kaymayı hesaplar.
 
 Kullanım:
-  1. QGIS'de bir harita katmanını açın (CROP_KALIBRE_HARITALAR)
+  1. QGIS'de bir harita katmanını açın (GEOREF_FINAL_STANDARD_164)
   2. OSM'de tanımlayabileceğiniz bir noktayı bulun
      (örn: bir yol kavşağı, köy, kıyı burnu)
   3. QGIS koordinat çubuğundan hem haritada hem OSM'de
@@ -22,7 +22,7 @@ Kullanım:
 # Harita üzerinde bir nokta seçin; QGIS koordinat çubuğunda
 # imleç o noktanın üzerindeyken okuyun:
 
-# Haritada göründüğü yer (CROP_KALIBRE üzerinde)
+# Visible location on the georeferenced map (GEOREF_FINAL_STANDARD_164)
 HARITA_LON = 106.123  # örnek — değiştirin!
 HARITA_LAT = -2.456   # örnek — değiştirin!
 

@@ -23,8 +23,8 @@ from osgeo import gdal, osr
 gdal.UseExceptions()
 
 BASE      = os.path.dirname(os.path.abspath(__file__))
-ESKI_DIR  = os.path.join(BASE, "ESKI_KALIBRE_HARITALAR")
-OUTPUT_DIR = os.path.join(BASE, "CROP_KALIBRE_HARITALAR")
+ESKI_DIR  = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
+OUTPUT_DIR = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
 CSV_PATH  = os.path.join(BASE, "bangka_dataset_v2.csv")
 
 if not os.path.exists(OUTPUT_DIR):

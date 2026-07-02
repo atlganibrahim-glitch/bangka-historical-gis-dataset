@@ -8,8 +8,8 @@ from osgeo import gdal
 gdal.UseExceptions()
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-ESKI = os.path.join(BASE, "ESKI_KALIBRE_HARITALAR")
-YENI = os.path.join(BASE, "YENI_KALIBRE_HARITALAR")
+ESKI = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
+YENI = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
 
 eski_dosyalar = set(f for f in os.listdir(ESKI) if f.endswith('.tif') and not f.endswith('.aux.xml'))
 

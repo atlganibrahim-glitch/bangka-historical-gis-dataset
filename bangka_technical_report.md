@@ -6,13 +6,6 @@ analysis
 **Total Sheets:** 176  
 **Date:** July 2026
 
-> **Note:** All numerical values in this report were re-measured directly against files on disk
-> (`bangka_dataset_v2.csv`, `GEOREF_FINAL_STANDART_164/`, `GEOREF_FINAL_BIRLESIK_12/`,
-> `kurtarilmis_haritalar/`); they are not derived from prior estimates.
-
-> **Documentation note:** This report was prepared with AI assistance (Claude). All technical claims
-> and measurements have been independently verified.
-
 ---
 
 ## 1. Introduction and Project Objective
@@ -33,7 +26,7 @@ The archive comprises two sheet types:
 
 Map margins (legends and white borders) were trimmed to produce `crop_*.jpg` files.
 
-1. **CSV synchronization:** The 176 crop files in `kurtarilmis_haritalar/` have pixel dimensions
+1. **CSV synchronization:** The 176 crop files in `recovered_maps/` have pixel dimensions
    (`crop_w` × `crop_h`) that exactly match `bangka_dataset_v2.csv`.
 2. **Re-cropping:** Eight files (`crop_012, 047, 056, 057, 145, 151, 170, 172`) were re-cropped
    from raw scans (`main maps`). Seven are vertical composite sheets; `crop_056` (`33-XXVI-d`)
@@ -86,14 +79,14 @@ of metres (Batavia → WGS 84 datum + paper drift) — the "empirical GCP offset
 *(Prior documentation reported only the small fine-tuning term, omitting the dominant +8.45′ base
 offset; this is why the stated longitude shift appeared two orders of magnitude too small.)*
 
-### Step 2: Single-Cell Mosaicking (`GEOREF_FINAL_STANDART_164`)
+### Step 2: Single-Cell Mosaicking (`GEOREF_FINAL_STANDARD_164`)
 
 The top-left corner of each of 164 standard sheets was anchored to *theoretical grid + systematic
 offset* and scaled to 5′ resolution. Because all 164 sheets share one exact grid origin
 (**σ = 0.0000′**), the result is a **gap-free, seamless tiling** among single-cell sheets — this
 claim is verified by measurement, not asserted.
 
-### Step 3: Composite Sheet Normalization (`GEOREF_FINAL_BIRLESIK_12`)
+### Step 3: Composite Sheet Normalization (`GEOREF_FINAL_COMPOSITE_12`)
 
 Each composite spans two cells but, being coastal, contains land in only **one**; the other is open
 sea and was largely cropped away. Verification established a consistent rule that holds for all
@@ -130,7 +123,7 @@ By combining the theoretical colonial graticule, OSM-verified systematic offset,
 composite-anchoring rule, the 176-sheet archive has been transformed into a spatially coherent
 WGS 84 dataset. The 164 single-cell sheets tile exactly (σ = 0.0′); the 12 coastal composite sheets
 are correctly anchored to their land cells with intentional sea-side voids. The dataset
-(`GEOREF_FINAL_STANDART_164` + `GEOREF_FINAL_BIRLESIK_12`) serves as a suitable base layer for
+(`GEOREF_FINAL_STANDARD_164` + `GEOREF_FINAL_COMPOSITE_12`) serves as a suitable base layer for
 historical cartography research and AI-driven image analysis.
 
 **Recommended further validation:** To express the "seamless" claim with quantified tolerance, an

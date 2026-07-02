@@ -14,7 +14,7 @@ from osgeo import gdal
 gdal.UseExceptions()
 
 BASE     = r'D:\İşlenecekHaritalar'
-ESKI_DIR = os.path.join(BASE, 'ESKI_KALIBRE_HARITALAR')
+ESKI_DIR = os.path.join(BASE, 'GEOREF_FINAL_STANDARD_164')
 CSV_IN   = os.path.join(BASE, 'bangka_dataset.csv')
 CSV_OUT  = os.path.join(BASE, 'bangka_dataset_v2.csv')
 

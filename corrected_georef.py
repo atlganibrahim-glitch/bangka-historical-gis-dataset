@@ -22,7 +22,7 @@ gdal.UseExceptions()
 # AYARLAR
 # ==============================================================================
 INPUT_DIR    = os.path.dirname(os.path.abspath(__file__))   # crop_xxx.jpg burada
-OUTPUT_DIR   = os.path.join(INPUT_DIR, "DUZELTILMIS_HARITALAR")
+OUTPUT_DIR   = os.path.join(INPUT_DIR, "CORRECTED_MAPS")
 CSV_PATH     = os.path.join(INPUT_DIR, "bangka_dataset.csv")
 
 # Subgrid haritası (Hollanda 1:25.000 sistemine göre)

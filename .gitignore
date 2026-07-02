@@ -8,41 +8,36 @@ env/
 venv/
 .env
 
-# QGIS & GIS Geçici Dosyaları
+# QGIS & GIS temporary files
 *.qgz~
 *.qgs~
 *.log
 *.tmp
 *.bak
 
-# Büyük Boyutlu Ham ve Çıktı Klasörleri (GitHub limiti nedeniyle bulut/Zenodo/HuggingFace'e yüklenmelidir)
+# Large raw scan and output directories (hosted on Zenodo/HuggingFace due to GitHub size limits)
 main maps/
-kurtarilmis_haritalar/
+recovered_maps/
 CROP_TEST/
 CROP_TEST2/
 GEOREF_NEATLINE/
 GEOREF_GRID/
 GEOREF_FINAL/
-GEOREF_FINAL_STANDART_164/
-GEOREF_FINAL_BIRLESIK_12/
-DUZELTILMIS_HARITALAR/
-CROP_KALIBRE_HARITALAR/
-ESKI_KALIBRE_HARITALAR/
-YENI_KALIBRE_HARITALAR/
+GEOREF_FINAL_STANDARD_164/
+GEOREF_FINAL_COMPOSITE_12/
+CORRECTED_MAPS/
 
-# Raster çıktıları (her ihtimale karşı global kural — hiçbir büyük TIF sızmasın)
+
+# Raster outputs (global rule to prevent any large TIF from leaking into repo)
 *.tif
 *.tif.aux.xml
 
-# Yedek CSV'ler
+# Backup CSVs
 *_backup.csv
 
-# Claude oturum dosyaları
+# Claude session files
 .claude/
 
-# Office geçici / kilit dosyaları
+# Office temporary / lock files
 ~$*
 *.~*
-
-# Eski Türkçe rapor (bangka_technical_report.md ile değiştirildi)
-bangka_georeferans_raporu.md

@@ -17,7 +17,7 @@ from osgeo import gdal, osr
 gdal.UseExceptions()
 
 BASE     = r'D:\İşlenecekHaritalar'
-ESKI_DIR = os.path.join(BASE, 'GEOREF_FINAL_STANDART_164')
+ESKI_DIR = os.path.join(BASE, 'GEOREF_FINAL_STANDARD_164')
 
 # Test haritası
 CROP_FILE  = os.path.join(BASE, 'crop_000.jpg')

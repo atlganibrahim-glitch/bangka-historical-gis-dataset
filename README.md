@@ -4,9 +4,6 @@
 ![Dataset Size](https://img.shields.io/badge/Dataset-176%20Sheets-brightgreen.svg)
 ![GIS](https://img.shields.io/badge/GIS-QGIS%20%7C%20GDAL-orange.svg)
 
-> **Note:** This documentation was prepared with AI assistance (Claude). All technical
-> claims and measurements have been independently verified against disk files.
-
 ## Overview / Proje Hakkında
 
 This repository contains the metadata, calibration pipeline, Python GIS automation
@@ -18,10 +15,7 @@ The pipeline transforms 176 unreferenced historical scanned map sheets into a
 layer for **deep-learning / computer-vision** analysis of historical land use and
 long-term deforestation.
 
-> **Documentation note:** all metrics below were re-verified directly against the files
-> on disk. The authoritative, verified write-up is
-> [`METHODOLOGY_REVISED_EN.md`](METHODOLOGY_REVISED_EN.md); the Turkish report is
-> [`bangka_georeferans_raporu.md`](bangka_georeferans_raporu.md).
+The authoritative English methodology write-up is [`METHODOLOGY_REVISED_EN.md`](METHODOLOGY_REVISED_EN.md); the full technical report is [`bangka_technical_report.md`](bangka_technical_report.md).
 
 ## Dataset Composition
 
@@ -66,8 +60,8 @@ bangka-historical-gis-dataset/
 ## Downloading the Full Map Dataset (GeoTIFFs)
 
 Due to GitHub size limits (100 MB per file; large repos discouraged), the georeferenced
-GeoTIFF archives (`GEOREF_FINAL_STANDART_164/`, `GEOREF_FINAL_BIRLESIK_12/`) and the raw
-scans (`main maps/`, `kurtarilmis_haritalar/`) are **not** tracked here and should be
+GeoTIFF archives (`GEOREF_FINAL_STANDARD_164/`, `GEOREF_FINAL_COMPOSITE_12/`) and the raw
+scans (`main maps/`, `recovered_maps/`) are **not** tracked here and should be
 hosted externally (e.g. Hugging Face / Zenodo). See `.gitignore`.
 
 ## Requirements & Installation

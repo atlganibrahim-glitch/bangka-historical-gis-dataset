@@ -1,10 +1,6 @@
 # Georeferencing and Mosaicking of 176 Historical Dutch
 # Topographic Maps of Bangka Island — Methodology (Revised)
 
-*Prepared for review. All figures below were re-verified against the files on disk
-(`bangka_dataset_v2.csv`, `GEOREF_FINAL_STANDART_164/`, `GEOREF_FINAL_BIRLESIK_12/`,
-`kurtarilmis_haritalar/`) rather than quoted from earlier estimates.*
-
 ---
 
 ## Overview
@@ -27,7 +23,7 @@ Of the 176 sheets:
 ## Phase 1 — Dataset Audit and Re-Cropping
 
 A pixel-level audit compared every crop against `bangka_dataset_v2.csv`. The current
-crop files reside in `kurtarilmis_haritalar/` and their on-disk dimensions now match
+crop files reside in `recovered_maps/` and their on-disk dimensions now match
 the CSV (`crop_w`, `crop_h`) exactly for all 176 rows — the dataset is synchronized.
 
 **Correction to the earlier draft:** the previously cited list of "8 over-cropped
@@ -102,13 +98,13 @@ of magnitude too small.)*
 
 ## Phase 4 — Standardization and Coastal (Composite) Normalization
 
-### Standard 164 single-cell sheets → `GEOREF_FINAL_STANDART_164/`
+### Standard 164 single-cell sheets → `GEOREF_FINAL_STANDARD_164/`
 Each map's top-left corner was anchored to *theoretical top-left + systematic offset*
 and scaled to the 5′ resolution. Because the 164 sheets share one exact grid origin
 (σ = 0.0000′), the result is a **seamless, gap-free tiling** across all single-cell
 sheets — verified, not asserted.
 
-### Special 12 composite sheets → `GEOREF_FINAL_BIRLESIK_12/`
+### Special 12 composite sheets → `GEOREF_FINAL_COMPOSITE_12/`
 Each composite covers two cells but, being coastal, contains land in only **one** of
 them; the other is open sea and was largely cropped away. Verification established a
 clean, consistent rule and confirmed it holds for all 12:

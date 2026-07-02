@@ -3,7 +3,7 @@ import os, sys
 from osgeo import gdal
 gdal.UseExceptions()
 
-KLASOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "YENI_KALIBRE_HARITALAR")
+KLASOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "GEOREF_FINAL_STANDARD_164")
 
 # İlk birkaç GeoTIFF'in koordinatlarını kontrol et
 dosyalar = sorted([f for f in os.listdir(KLASOR) if f.endswith('.tif')])[:5]

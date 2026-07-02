@@ -40,7 +40,7 @@ def diagnose_from_sheet(sheet_id, csv_path=None):
 
     base = os.path.dirname(__file__)
     crop_path = os.path.join(base, crop_fn)
-    eski_path = os.path.join(base, 'ESKI_KALIBRE_HARITALAR', sheet_id + '.tif')
+    eski_path = os.path.join(base, 'GEOREF_FINAL_STANDARD_164', sheet_id + '.tif')
     return diagnose_from_paths(crop_path, eski_path, ml, mr, mt, mb)
 
 

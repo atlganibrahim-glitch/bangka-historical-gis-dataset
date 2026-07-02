@@ -7,7 +7,7 @@ import os
 # --- AYARLAR ---
 csv_path = 'bangka_dataset.csv'
 input_dir = '.'  # Haritalar bu klasörde
-output_dir = 'kurtarilmis_haritalar'
+output_dir = 'recovered_maps'
 os.makedirs(output_dir, exist_ok=True)
 
 # Veri setini oku
