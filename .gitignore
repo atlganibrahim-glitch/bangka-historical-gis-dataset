@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+
+# QGIS & GIS Geçici Dosyaları
+*.qgz~
+*.qgs~
+*.log
+*.tmp
+*.bak
+
+# Büyük Boyutlu Ham ve Çıktı Klasörleri (GitHub limiti nedeniyle bulut/Zenodo/HuggingFace'e yüklenmelidir)
+main maps/
+kurtarilmis_haritalar/
+CROP_TEST/
+CROP_TEST2/
+GEOREF_NEATLINE/
+GEOREF_GRID/
+GEOREF_FINAL/
+GEOREF_FINAL_STANDART_164/
+GEOREF_FINAL_BIRLESIK_12/
+DUZELTILMIS_HARITALAR/
+CROP_KALIBRE_HARITALAR/
+ESKI_KALIBRE_HARITALAR/
+YENI_KALIBRE_HARITALAR/
+
+# Raster çıktıları (her ihtimale karşı global kural — hiçbir büyük TIF sızmasın)
+*.tif
+*.tif.aux.xml
+
+# Yedek CSV'ler
+*_backup.csv
+
+# Claude oturum dosyaları
+.claude/
+
+# Office geçici / kilit dosyaları
+~$*
+*.~*
