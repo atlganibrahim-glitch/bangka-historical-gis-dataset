@@ -43,3 +43,6 @@ YENI_KALIBRE_HARITALAR/
 # Office geçici / kilit dosyaları
 ~$*
 *.~*
+
+# Eski Türkçe rapor (bangka_technical_report.md ile değiştirildi)
+bangka_georeferans_raporu.md

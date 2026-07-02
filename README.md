@@ -59,8 +59,8 @@ bangka-historical-gis-dataset/
 ├── bangka_dataset.csv             # Earlier metadata revision
 ├── .gitignore                     # Excludes heavy raw scans & GeoTIFF outputs
 └── *.py                           # Pipeline & diagnostic scripts
-                                   #   georef_grid.py, duzeltilmis_geo.py,
-                                   #   grid_tespit_teshis.py, osm_hizalama_kontrol.py, ...
+                                   #   georef_grid.py, corrected_georef.py,
+                                   #   grid_detection_diagnostic.py, osm_alignment_check.py, ...
 ```
 
 ## Downloading the Full Map Dataset (GeoTIFFs)
