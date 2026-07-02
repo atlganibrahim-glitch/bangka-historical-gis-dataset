@@ -6,7 +6,7 @@ import os
 
 # --- SETTINGS ---
 csv_path = 'bangka_dataset.csv'
-input_dir = '.'  # Maps are in this folder
+input_dir = 'main maps'  # Raw scans live in this folder
 output_dir = 'recovered_maps'
 os.makedirs(output_dir, exist_ok=True)
 

@@ -10,7 +10,7 @@ LON_OFFSET = 0.14043
 LAT_OFFSET = -0.01045
 # ==============================================================================
 
-INPUT_DIR = "."
+INPUT_DIR = "recovered_maps"  # cropped images live here
 OUTPUT_DIR = "GEOREF_FINAL_STANDARD_164"
 
 if not os.path.exists(OUTPUT_DIR):

@@ -24,6 +24,7 @@ gdal.UseExceptions()
 
 BASE       = os.path.dirname(os.path.abspath(__file__))
 OLD_DIR    = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
+CROP_DIR   = os.path.join(BASE, "recovered_maps")
 OUTPUT_DIR = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
 CSV_PATH   = os.path.join(BASE, "bangka_dataset_v2.csv")
 
@@ -31,7 +32,7 @@ if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
 df = pd.read_csv(CSV_PATH)
-existing_crop = set(os.listdir(BASE))
+existing_crop = set(os.listdir(CROP_DIR))
 old_files = set(os.listdir(OLD_DIR))
 
 print(f"OLD calibrated folder: {OLD_DIR}")
@@ -64,7 +65,7 @@ for _, row in df.iterrows():
         continue
 
     old_path    = os.path.join(OLD_DIR, old_file)
-    crop_path   = os.path.join(BASE, crop_filename)
+    crop_path   = os.path.join(CROP_DIR, crop_filename)
     output_path = os.path.join(OUTPUT_DIR, f"{sheet_id}.tif")
 
     try:

@@ -102,7 +102,8 @@ special tooling is needed, any GIS reads them directly.
 Only needed to **reproduce** the pipeline (not to view the data):
 
 ```bash
-pip install numpy pandas gdal
+pip install numpy pandas gdal opencv-python Pillow
+# Expected input layout: raw scans in 'main maps/', crops in 'recovered_maps/'
 # Reproduce the pipeline (run from the repository root, in order):
 python map_crop.py          # 1. crop raw scans      → recovered_maps/
 python recalc_margins.py    # 2. recompute margins   → bangka_dataset_v2.csv

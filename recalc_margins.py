@@ -15,6 +15,7 @@ gdal.UseExceptions()
 
 BASE     = r'D:\İşlenecekHaritalar'
 OLD_DIR  = os.path.join(BASE, 'GEOREF_FINAL_STANDARD_164')
+CROP_DIR = os.path.join(BASE, 'recovered_maps')
 CSV_IN   = os.path.join(BASE, 'bangka_dataset.csv')
 CSV_OUT  = os.path.join(BASE, 'bangka_dataset_v2.csv')
 
@@ -171,7 +172,7 @@ def main():
         cf  = str(row.get('crop_filename', ''))
         old_file = sid + '.tif'
         old_path = os.path.join(OLD_DIR, old_file)
-        crop_path = os.path.join(BASE, cf)
+        crop_path = os.path.join(CROP_DIR, cf)
 
         if old_file not in old_files:
             skipped.append((sid, 'OLD not found'))
