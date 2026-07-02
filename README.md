@@ -4,6 +4,9 @@
 ![Dataset Size](https://img.shields.io/badge/Dataset-176%20Sheets-brightgreen.svg)
 ![GIS](https://img.shields.io/badge/GIS-QGIS%20%7C%20GDAL-orange.svg)
 
+> **Note:** This documentation was prepared with AI assistance (Claude). All technical
+> claims and measurements have been independently verified against disk files.
+
 ## Overview / Proje Hakkında
 
 This repository contains the metadata, calibration pipeline, Python GIS automation
