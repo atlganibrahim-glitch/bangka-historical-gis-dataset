@@ -48,13 +48,24 @@ The authoritative English methodology write-up is [`METHODOLOGY_REVISED_EN.md`](
 bangka-historical-gis-dataset/
 ├── README.md                      # This file
 ├── METHODOLOGY_REVISED_EN.md      # Verified English methodology
-├── bangka_georeferans_raporu.md   # Turkish technical report
+├── bangka_technical_report.md     # Full technical report
 ├── bangka_dataset_v2.csv          # Master metadata & pixel dimensions (176 sheets)
 ├── bangka_dataset.csv             # Earlier metadata revision
 ├── .gitignore                     # Excludes heavy raw scans & GeoTIFF outputs
-└── *.py                           # Pipeline & diagnostic scripts
-                                   #   georef_grid.py, corrected_georef.py,
-                                   #   grid_detection_diagnostic.py, osm_alignment_check.py, ...
+│
+├── Core pipeline (produces the published dataset):
+│   ├── map_crop.py                # Crop raw scans → recovered_maps/ (Phase 1)
+│   ├── recalc_margins.py          # Recompute margins → bangka_dataset_v2.csv (Phase 1)
+│   ├── automated_georef.py        # Grid + offset georef → GEOREF_FINAL_STANDARD_164/ (Phase 3)
+│   └── crop_margin_geo.py         # Margin correction against the OLD reference
+│
+├── QC / diagnostics:
+│   ├── verify_georef.py           # Quick coordinate sanity check
+│   ├── osm_alignment_check.py     # Manual OSM alignment helper (QGIS console)
+│   └── calibration_comparison.py  # Derive the systematic offset from a manual reference
+│
+└── archive/                       # Experimental & superseded scripts (reference only)
+    └── README.md                  #   georef_grid.py, corrected_georef.py, diagnose_georef.py, ...
 ```
 
 ## Downloading the Full Map Dataset (GeoTIFFs)
@@ -64,12 +75,39 @@ GeoTIFF archives (`GEOREF_FINAL_STANDARD_164/`, `GEOREF_FINAL_COMPOSITE_12/`) an
 scans (`main maps/`, `recovered_maps/`) are **not** tracked here and should be
 hosted externally (e.g. Hugging Face / Zenodo). See `.gitignore`.
 
+## Using the Data (Quick Start)
+
+The published outputs are plain **GeoTIFF** rasters in **WGS 84 (EPSG:4326)** — no
+special tooling is needed, any GIS reads them directly.
+
+1. **Get the rasters.** Download `GEOREF_FINAL_STANDARD_164/` (the 164 single-cell
+   sheets) and, if you need the coastline sheets, `GEOREF_FINAL_COMPOSITE_12/` from the
+   external host (see below). The scripts in this repo are only needed if you want to
+   *reproduce* the georeferencing — not to *use* the maps.
+2. **Open them.** In **QGIS**: `Layer → Add Layer → Add Raster Layer…`, select the
+   `.tif` files (you can multi-select the whole folder). They land in their real-world
+   position automatically. To start, open a few single-cell sheets from
+   `GEOREF_FINAL_STANDARD_164/` — they tile seamlessly (σ = 0.0000′).
+3. **Add a basemap for context** (optional): `XYZ Tiles → OpenStreetMap`, so the
+   historical sheets overlay on modern geography.
+4. **Composites:** each of the 12 composite sheets covers a land cell plus an
+   (intentionally empty) sea cell; place them the same way — they will not overlap the
+   single-cell sheets.
+5. **Command-line check** (optional): to confirm a downloaded folder is correctly
+   georeferenced, run `python verify_georef.py`, which prints the corner coordinates of
+   the first few sheets. Inspect any single file with `gdalinfo <sheet>.tif`.
+
 ## Requirements & Installation
+
+Only needed to **reproduce** the pipeline (not to view the data):
 
 ```bash
 pip install numpy pandas gdal
-# example: run the grid-based georeferencing pipeline
-python georef_grid.py
+# Reproduce the pipeline (run from the repository root, in order):
+python map_crop.py          # 1. crop raw scans      → recovered_maps/
+python recalc_margins.py    # 2. recompute margins   → bangka_dataset_v2.csv
+python automated_georef.py  # 3. grid + offset georef → GEOREF_FINAL_STANDARD_164/
+python crop_margin_geo.py   # 4. margin correction against the reference
 ```
 
 ## Known Limitations

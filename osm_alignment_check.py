@@ -1,66 +1,66 @@
 # -*- coding: utf-8 -*-
 """
-OSM Hizalama Kontrol Scripti
-=============================
-QGIS konsolunda çalıştırın.
+OSM Alignment Check Script
+==========================
+Run this in the QGIS console.
 
-Yapılan işlem:
-  Bilinen bir OSM noktasının (yol kavşağı, kıyı koordinatı vb.)
-  harita üzerindeki görünen koordinatı ile gerçek WGS84 koordinatını
-  karşılaştırarak sistematik kaymayı hesaplar.
+What it does:
+  Compares the coordinate of a known OSM point (road junction, coastline
+  coordinate, etc.) as it appears on the map with its true WGS84 coordinate,
+  to compute the systematic shift.
 
-Kullanım:
-  1. QGIS'de bir harita katmanını açın (GEOREF_FINAL_STANDARD_164)
-  2. OSM'de tanımlayabileceğiniz bir noktayı bulun
-     (örn: bir yol kavşağı, köy, kıyı burnu)
-  3. QGIS koordinat çubuğundan hem haritada hem OSM'de
-     o noktanın koordinatını okuyun
-  4. Aşağıdaki değerleri doldurun ve çalıştırın
+Usage:
+  1. Open a map layer in QGIS (GEOREF_FINAL_STANDARD_164)
+  2. Find a point you can identify on OSM
+     (e.g. a road junction, village, coastal cape)
+  3. Read that point's coordinate from the QGIS coordinate bar,
+     both on the map and on OSM
+  4. Fill in the values below and run
 """
+import math
 
-# === BURAYA GİRİN ===
-# Harita üzerinde bir nokta seçin; QGIS koordinat çubuğunda
-# imleç o noktanın üzerindeyken okuyun:
+# === ENTER HERE ===
+# Pick a point on the map; read it from the QGIS coordinate bar
+# while the cursor is over that point:
 
 # Visible location on the georeferenced map (GEOREF_FINAL_STANDARD_164)
-HARITA_LON = 106.123  # örnek — değiştirin!
-HARITA_LAT = -2.456   # örnek — değiştirin!
+MAP_LON = 106.123  # example - change this!
+MAP_LAT = -2.456   # example - change this!
 
-# Aynı fiziksel noktanın OSM/Google'daki gerçek koordinatı
-# (OSM'de sağ tık → "Bu konumu kopyala" veya koordinat barından)
-GERCEK_LON = 106.125  # örnek — değiştirin!
-GERCEK_LAT = -2.453   # örnek — değiştirin!
+# True coordinate of the same physical point on OSM/Google
+# (on OSM: right-click -> "Copy this location", or from the coordinate bar)
+TRUE_LON = 106.125  # example - change this!
+TRUE_LAT = -2.453   # example - change this!
 # ====================
 
-delta_lon = GERCEK_LON - HARITA_LON
-delta_lat = GERCEK_LAT - HARITA_LAT
+delta_lon = TRUE_LON - MAP_LON
+delta_lat = TRUE_LAT - MAP_LAT
 
-# Metreye çevir (yaklaşık, Bangka enleminde)
-M_PER_DEG_LON = 111320 * abs(import_cos(-2.0 * 3.14159 / 180))  # cos(-2°)
+# Convert to meters (approximate, at Bangka's latitude)
+M_PER_DEG_LON = 111320 * abs(math.cos(math.radians(-2.0)))  # cos(-2 deg)
 M_PER_DEG_LAT = 111320
 
-# Basit hesap
-import math
-cos_lat = math.cos(math.radians(HARITA_LAT))
+# Simple computation
+cos_lat = math.cos(math.radians(MAP_LAT))
 dx_m = delta_lon * 111320 * cos_lat
 dy_m = delta_lat * 111320
 
 print("=" * 55)
-print("OSM HIZALAma KONTROLÜ")
+print("OSM ALIGNMENT CHECK")
 print("=" * 55)
-print(f"  Haritadaki koordinat : {HARITA_LON:.6f}, {HARITA_LAT:.6f}")
-print(f"  Gerçek koordinat     : {GERCEK_LON:.6f}, {GERCEK_LAT:.6f}")
+print(f"  Coordinate on map : {MAP_LON:.6f}, {MAP_LAT:.6f}")
+print(f"  True coordinate   : {TRUE_LON:.6f}, {TRUE_LAT:.6f}")
 print()
-print(f"  ΔLon : {delta_lon:+.6f}° ({dx_m:+.1f} m Doğu)")
-print(f"  ΔLat : {delta_lat:+.6f}° ({dy_m:+.1f} m Kuzey)")
+print(f"  dLon : {delta_lon:+.6f} deg ({dx_m:+.1f} m East)")
+print(f"  dLat : {delta_lat:+.6f} deg ({dy_m:+.1f} m North)")
 print()
-print(f"  Toplam kayma : {math.sqrt(dx_m**2 + dy_m**2):.1f} m")
-yön = math.degrees(math.atan2(dx_m, dy_m))
-print(f"  Yön          : {yön:.1f}° (0=K, 90=D, 180=G, 270=B)")
+print(f"  Total shift : {math.sqrt(dx_m**2 + dy_m**2):.1f} m")
+bearing = math.degrees(math.atan2(dx_m, dy_m))
+print(f"  Bearing     : {bearing:.1f} deg (0=N, 90=E, 180=S, 270=W)")
 print()
 if abs(dx_m) < 100 and abs(dy_m) < 100:
-    print("✅ Kayma < 100m — Georeferanslama yeterli iyi!")
+    print("[OK] Shift < 100m - Georeferencing is good enough!")
 elif abs(dx_m) < 500 and abs(dy_m) < 500:
-    print("⚠️  Kayma 100-500m arasında — Datum farkı veya georeflama hatası")
+    print("[WARN] Shift between 100-500m - Datum difference or georef error")
 else:
-    print("❌ Kayma > 500m — Büyük hata, datum dönüşümü gerekebilir")
+    print("[ERROR] Shift > 500m - Large error, datum transform may be needed")

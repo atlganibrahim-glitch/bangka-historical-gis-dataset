@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Margin Yeniden Hesaplama - Kenar+FFT Yontemi
-=============================================
-JPEG crop vs TIFF ESKI icin guvenilir template matching:
-  1. Her iki goruntude de Sobel kenar tespiti uygula
-  2. Kenar goruntuleri uzerinde FFT cross-correlation yap
-  3. Beklenen bolgeden (CSV margin) baslayarak dogrulama yap
+Margin Recalculation - Edge + FFT Method
+========================================
+Reliable template matching for JPEG crop vs OLD TIFF:
+  1. Apply Sobel edge detection to both images
+  2. Run FFT cross-correlation on the edge images
+  3. Validate starting from the expected region (CSV margin)
 """
 import os, time
 import numpy as np
@@ -14,11 +14,11 @@ from osgeo import gdal
 gdal.UseExceptions()
 
 BASE     = r'D:\İşlenecekHaritalar'
-ESKI_DIR = os.path.join(BASE, 'GEOREF_FINAL_STANDARD_164')
+OLD_DIR  = os.path.join(BASE, 'GEOREF_FINAL_STANDARD_164')
 CSV_IN   = os.path.join(BASE, 'bangka_dataset.csv')
 CSV_OUT  = os.path.join(BASE, 'bangka_dataset_v2.csv')
 
-SCALE = 4   # indirgenme orani (4x daha kucuk)
+SCALE = 4   # downsampling factor (4x smaller)
 
 
 def read_gray(path, scale):
@@ -38,13 +38,13 @@ def read_gray(path, scale):
 
 
 def sobel_edges(arr):
-    """Basit Sobel kenar tespiti (scipy olmadan)."""
+    """Simple Sobel edge detection (without scipy)."""
     kx = np.array([[-1,0,1],[-2,0,2],[-1,0,1]], dtype=np.float32)
     ky = kx.T
-    # el ile konvolüsyon (kucuk kernel)
+    # manual convolution (small kernel)
     from numpy.lib.stride_tricks import as_strided
     rows, cols = arr.shape
-    # 2D sliding window ile konvolüsyon
+    # 2D convolution via sliding window
     def conv2(im, k):
         r, c = k.shape
         pr, pc = r//2, c//2
@@ -65,20 +65,20 @@ def norm2d(a):
     return a / s if s > 0 else a
 
 
-def fft_xcorr(eski_arr, crop_arr):
-    """FFT cross-correlation; tepe = crop'un eski icindeki offset."""
-    eh, ew = eski_arr.shape
+def fft_xcorr(old_arr, crop_arr):
+    """FFT cross-correlation; peak = offset of crop within old image."""
+    eh, ew = old_arr.shape
     ch, cw = crop_arr.shape
     if ch > eh or cw > ew:
         return None, None, None
-    e = norm2d(eski_arr)
+    e = norm2d(old_arr)
     c = norm2d(crop_arr)
     c_pad = np.zeros((eh, ew), dtype=np.float32)
     c_pad[:ch, :cw] = c
     E = np.fft.rfft2(e)
     C = np.fft.rfft2(c_pad)
     corr = np.fft.irfft2(E * np.conj(C), s=(eh, ew)).real
-    # Gecersiz konumlari maskele
+    # Mask invalid positions
     mask = np.ones((eh, ew), dtype=bool)
     mask[eh-ch+1:, :] = False
     mask[:, ew-cw+1:] = False
@@ -88,29 +88,29 @@ def fft_xcorr(eski_arr, crop_arr):
     return int(x), int(y), float(score)
 
 
-def match_sheet(eski_path, crop_path, csv_ml, csv_mr, csv_mt, csv_mb):
+def match_sheet(old_path, crop_path, csv_ml, csv_mr, csv_mt, csv_mb):
     """
-    crop'un eski icindeki piksel offsetini bul.
-    Iki adim:
-      1. Tam goruntu FFT match (1/SCALE boyutunda)
-      2. CSV margin'den beklenen bolgede yerel dogrulama
-    Daha yuksek skorlu sonucu dondur.
+    Find the pixel offset of the crop within the old image.
+    Two steps:
+      1. Full-image FFT match (at 1/SCALE size)
+      2. Local validation at the region expected from the CSV margin
+    Return the higher-scoring result.
     """
-    e_arr, ew, eh = read_gray(eski_path, SCALE)
+    e_arr, ew, eh = read_gray(old_path, SCALE)
     c_arr, cw, ch = read_gray(crop_path, SCALE)
 
-    # -- Kenar goruntuleri --
+    # -- Edge images --
     e_edge = sobel_edges(e_arr)
     c_edge = sobel_edges(c_arr)
 
     # -- Global FFT match --
     gx, gy, gscore = fft_xcorr(e_edge, c_edge)
 
-    # -- CSV'den beklenen offset (dogrulama/alternatif) --
-    # CSV marginlarindan beklenen piksel offset (SCALE boyutunda)
+    # -- Expected offset from CSV (validation/alternative) --
+    # Expected pixel offset from CSV margins (at SCALE size)
     ex_csv = int(csv_ml * (ew // SCALE))
     ey_csv = int(csv_mt * (eh // SCALE))
-    # Bu noktada yerel korrelasyon skoru
+    # Local correlation score at this point
     eeh, eew = e_edge.shape
     ceh, cew_ = c_edge.shape
     csv_score = -np.inf
@@ -120,7 +120,7 @@ def match_sheet(eski_path, crop_path, csv_ml, csv_mr, csv_mt, csv_mb):
         p_n = norm2d(patch)
         csv_score = float((p_n * c_n).sum())
 
-    # Global'in csv bolgesi etrafindaki yerel skoru da hesapla
+    # Also compute the global match's local score around the CSV region
     global_score_local = -np.inf
     if gx is not None:
         gxf = min(max(gx, 0), eew - cew_)
@@ -131,7 +131,7 @@ def match_sheet(eski_path, crop_path, csv_ml, csv_mr, csv_mt, csv_mb):
             c_n   = norm2d(c_edge)
             global_score_local = float((p_g_n * c_n).sum())
 
-    # Hangisi daha iyi?
+    # Which one is better?
     if csv_score >= global_score_local:
         best_x_s = ex_csv
         best_y_s = ey_csv
@@ -143,7 +143,7 @@ def match_sheet(eski_path, crop_path, csv_ml, csv_mr, csv_mt, csv_mb):
         method = 'FFT-global'
         best_score = global_score_local
 
-    # Tam cozunurluge donustur
+    # Convert back to full resolution
     fx = best_x_s * SCALE
     fy = best_y_s * SCALE
 
@@ -155,35 +155,35 @@ def match_sheet(eski_path, crop_path, csv_ml, csv_mr, csv_mt, csv_mb):
     return ml, mt, mr, mb, fx, fy, method, best_score
 
 
-# ─── Ana ──────────────────────────────────────────────────────────────────────
+# --- Main ---------------------------------------------------------------------
 def main():
     df = pd.read_csv(CSV_IN)
-    eski_dosyalar = set(os.listdir(ESKI_DIR))
+    old_files = set(os.listdir(OLD_DIR))
     results = []
-    basarili = 0
-    atlanan  = []
+    success = 0
+    skipped = []
 
-    print('Toplam ' + str(len(df)) + ' harita icin margin hesaplaniyor...')
+    print('Computing margins for ' + str(len(df)) + ' maps...')
     print('=' * 80)
 
     for idx, row in df.iterrows():
         sid = row['sheet_id']
         cf  = str(row.get('crop_filename', ''))
-        eski_dosya = sid + '.tif'
-        eski_path  = os.path.join(ESKI_DIR, eski_dosya)
-        crop_path  = os.path.join(BASE, cf)
+        old_file = sid + '.tif'
+        old_path = os.path.join(OLD_DIR, old_file)
+        crop_path = os.path.join(BASE, cf)
 
-        if eski_dosya not in eski_dosyalar:
-            atlanan.append((sid, 'ESKI bulunamadi'))
+        if old_file not in old_files:
+            skipped.append((sid, 'OLD not found'))
             results.append(row.to_dict()); continue
         if not os.path.exists(crop_path):
-            atlanan.append((sid, 'crop bulunamadi: ' + cf))
+            skipped.append((sid, 'crop not found: ' + cf))
             results.append(row.to_dict()); continue
 
         t0 = time.time()
         try:
             ml, mt, mr, mb, fx, fy, method, score = match_sheet(
-                eski_path, crop_path,
+                old_path, crop_path,
                 row['margin_left'], row['margin_right'],
                 row['margin_top'],  row['margin_bottom']
             )
@@ -212,32 +212,32 @@ def main():
             new_row['margin_top']    = round(mt, 5)
             new_row['margin_bottom'] = round(mb, 5)
             results.append(new_row)
-            basarili += 1
+            success += 1
 
         except Exception as e:
-            atlanan.append((sid, str(e)))
+            skipped.append((sid, str(e)))
             results.append(row.to_dict())
-            print('  HATA ' + sid + ': ' + str(e))
+            print('  ERROR ' + sid + ': ' + str(e))
 
     df_out = pd.DataFrame(results, columns=df.columns)
     df_out.to_csv(CSV_OUT, index=False)
 
     print()
     print('=' * 80)
-    print('Tamamlandi: ' + str(basarili) + '/' + str(len(df)) + ' harita')
-    print('Sonuc: ' + CSV_OUT)
-    if atlanan:
-        print('Atlanan ' + str(len(atlanan)) + ':')
-        for s, r in atlanan:
+    print('Done: ' + str(success) + '/' + str(len(df)) + ' maps')
+    print('Output: ' + CSV_OUT)
+    if skipped:
+        print('Skipped ' + str(len(skipped)) + ':')
+        for s, r in skipped:
             print('  x ' + s + ': ' + r)
 
     df_old = pd.read_csv(CSV_IN)
     df_new = pd.read_csv(CSV_OUT)
     print()
-    print('Margin degisim ozeti:')
+    print('Margin change summary:')
     for col in ['margin_left', 'margin_right', 'margin_top', 'margin_bottom']:
         delta = df_new[col] - df_old[col]
-        print('  ' + col.ljust(20) + ' ort_d=' + str(round(delta.mean(),5)) +
+        print('  ' + col.ljust(20) + ' mean_d=' + str(round(delta.mean(),5)) +
               '  std=' + str(round(delta.std(),5)) +
               '  max|d|=' + str(round(delta.abs().max(),5)))
 
