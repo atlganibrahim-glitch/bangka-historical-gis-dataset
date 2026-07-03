@@ -72,8 +72,20 @@ bangka-historical-gis-dataset/
 
 Due to GitHub size limits (100 MB per file; large repos discouraged), the georeferenced
 GeoTIFF archives (`GEOREF_FINAL_STANDARD_164/`, `GEOREF_FINAL_COMPOSITE_12/`) and the raw
-scans (`main maps/`, `recovered_maps/`) are **not** tracked here and should be
-hosted externally (e.g. Hugging Face / Zenodo). See `.gitignore`.
+scans (`main maps/`, `recovered_maps/`) are **not** tracked in this Git repository. The
+full ~6 GB dataset is hosted on the Hugging Face Hub:
+
+**📦 https://huggingface.co/datasets/ibrahimatlgn/bangka-1930s-topographic-maps**
+
+```python
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id="ibrahimatlgn/bangka-1930s-topographic-maps",
+    repo_type="dataset",
+    local_dir="bangka_data",
+    allow_patterns=["GEOREF_FINAL_STANDARD_164/*"],  # or omit to fetch everything
+)
+```
 
 ## Using the Data (Quick Start)
 
