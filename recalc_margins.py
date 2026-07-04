@@ -16,7 +16,7 @@ gdal.UseExceptions()
 BASE     = r'D:\İşlenecekHaritalar'
 OLD_DIR  = os.path.join(BASE, 'GEOREF_FINAL_STANDARD_164')
 CROP_DIR = os.path.join(BASE, 'recovered_maps')
-CSV_IN   = os.path.join(BASE, 'bangka_dataset.csv')
+CSV_IN   = os.path.join(BASE, 'archive', 'bangka_dataset.csv')
 CSV_OUT  = os.path.join(BASE, 'bangka_dataset_v2.csv')
 
 SCALE = 4   # downsampling factor (4x smaller)

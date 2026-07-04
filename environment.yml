@@ -1,0 +1,10 @@
+name: bangka-gis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - gdal            # osgeo.gdal / osgeo.osr — used by all georef scripts
+  - numpy           # recalc_margins.py, archive/georef_grid.py, ...
+  - pandas          # metadata / CSV handling
+  - pillow          # PIL — map_crop.py
+  - opencv          # cv2  — map_crop.py

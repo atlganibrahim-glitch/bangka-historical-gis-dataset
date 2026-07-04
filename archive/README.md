@@ -8,7 +8,12 @@ explored and why the grid-line auto-detection approach was ultimately not used.
 
 > Paths in these files assume they are run from the **repository root**
 > (e.g. `python archive/georef_grid.py`), where `GEOREF_FINAL_STANDARD_164/`
-> and the CSV files live. Some may need path adjustments to run.
+> lives. Some may need path adjustments to run.
+
+**`bangka_dataset.csv`** also lives here: it is the **original** metadata table
+(provided as source material; original compiler undocumented), superseded by
+`../bangka_dataset_v2.csv`. It is kept as the input for the reproduction pipeline
+and for provenance. See [`../CHANGELOG.md`](../CHANGELOG.md) for what was corrected.
 
 | Script | What it was | Why it's archived |
 |--------|-------------|-------------------|

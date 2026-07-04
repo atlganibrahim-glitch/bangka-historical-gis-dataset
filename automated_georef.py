@@ -16,7 +16,7 @@ OUTPUT_DIR = "GEOREF_FINAL_STANDARD_164"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-df = pd.read_csv('bangka_dataset.csv')
+df = pd.read_csv(os.path.join('archive', 'bangka_dataset.csv'))
 
 subgrid_map = {
     'a': (0, 0), 'b': (1, 0), 'c': (2, 0), 'd': (3, 0),

@@ -42,6 +42,35 @@ The authoritative English methodology write-up is [`METHODOLOGY_REVISED_EN.md`](
    cell). There are **zero cell overlaps**; each composite's companion (sea) cell is
    intentionally empty.
 
+## Data Provenance & Source
+
+The 176 map sheets are digitized scans from the map series
+**"Res. Bangka en Onderhoorigheden"** (topografische en fotogrammetrische
+kaartering), scale 1:25,000, produced by the **Topografische Dienst in
+Nederlandsch-Indië** (Topographic Service of the Netherlands East Indies),
+Batavia. Survey/publication: 1930–1936 (e.g. sheet *Blad 31/XXIV q*, surveyed 1932).
+
+### Source & persistent identifier
+Digitized and held by **Leiden University Libraries – Digital Collections**
+(Dutch Colonial Maps / KIT collection).
+
+- Shelfmark: `KK 083-04-01/085-04-10`
+- Persistent URL (whole series): http://hdl.handle.net/1887.1/item:2078333
+
+### Rights / license of source maps
+The rights status of the source material is **public domain**
+(Creative Commons Public Domain Mark 1.0), as declared by the holding
+institution. Citing Leiden University Libraries as the source is requested.
+
+### Dataset metadata provenance & contribution
+`bangka_dataset.csv` (the original sheet index / metadata table) was **not
+compiled by the repository owner**. It was provided as source material by
+Thomas Smits (supervisor); the original compiler of the underlying table is not
+documented beyond this. The contribution in this repository is the
+**correction and maintenance** of that table, producing the updated
+`bangka_dataset_v2.csv`. The georeferencing pipeline and the accuracy metrics
+reported here are the owner's own work.
+
 ## Repository Structure / Klasör Yapısı
 
 ```text
@@ -50,7 +79,8 @@ bangka-historical-gis-dataset/
 ├── METHODOLOGY_REVISED_EN.md      # Verified English methodology
 ├── bangka_technical_report.md     # Full technical report
 ├── bangka_dataset_v2.csv          # Master metadata & pixel dimensions (176 sheets)
-├── bangka_dataset.csv             # Earlier metadata revision
+├── CHANGELOG.md                   # What was corrected from the original CSV → v2
+├── environment.yml                # Conda environment (recommended install)
 ├── .gitignore                     # Excludes heavy raw scans & GeoTIFF outputs
 │
 ├── Core pipeline (produces the published dataset):
@@ -64,7 +94,8 @@ bangka-historical-gis-dataset/
 │   ├── osm_alignment_check.py     # Manual OSM alignment helper (QGIS console)
 │   └── calibration_comparison.py  # Derive the systematic offset from a manual reference
 │
-└── archive/                       # Experimental & superseded scripts (reference only)
+└── archive/                       # Experimental scripts + the original source CSV (reference)
+    ├── bangka_dataset.csv         # Original metadata table (source material; superseded by v2)
     └── README.md                  #   georef_grid.py, corrected_georef.py, diagnose_georef.py, ...
 ```
 
@@ -111,11 +142,21 @@ special tooling is needed, any GIS reads them directly.
 
 ## Requirements & Installation
 
-Only needed to **reproduce** the pipeline (not to view the data):
+Only needed to **reproduce** the pipeline (not to view the data).
+
+**Recommended — conda** (installing GDAL via pip is unreliable):
 
 ```bash
-pip install numpy pandas gdal opencv-python Pillow
-# Expected input layout: raw scans in 'main maps/', crops in 'recovered_maps/'
+conda env create -f environment.yml
+conda activate bangka-gis
+```
+
+(pip alternative: `pip install numpy pandas gdal opencv-python Pillow` — but the
+GDAL wheel often fails to build; conda-forge is strongly preferred.)
+
+```bash
+# Expected input layout: raw scans in 'main maps/', crops in 'recovered_maps/',
+# original metadata table in 'archive/bangka_dataset.csv'.
 # Reproduce the pipeline (run from the repository root, in order):
 python map_crop.py          # 1. crop raw scans      → recovered_maps/
 python recalc_margins.py    # 2. recompute margins   → bangka_dataset_v2.csv

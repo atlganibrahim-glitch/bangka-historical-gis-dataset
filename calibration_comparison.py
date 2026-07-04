@@ -21,7 +21,7 @@ gdal.UseExceptions()
 
 BASE     = os.path.dirname(os.path.abspath(__file__))
 OLD_DIR  = os.path.join(BASE, "GEOREF_FINAL_STANDARD_164")
-CSV_PATH = os.path.join(BASE, "bangka_dataset.csv")
+CSV_PATH = os.path.join(BASE, "archive", "bangka_dataset.csv")
 
 # ============================================================
 # HERE: the sheet_id and file path you georeferenced manually

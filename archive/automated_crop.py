@@ -10,7 +10,7 @@ OUTPUT_DIR = "CROPPED_IMAGES"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-df = pd.read_csv('bangka_dataset.csv')
+df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'bangka_dataset.csv'))
 existing_files = [f for f in os.listdir(INPUT_DIR) if f.endswith(('.jpg', '.tif', '.png'))]
 
 print("Cropping map legends based on pixel data...\n" + "-"*50)
