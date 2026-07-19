@@ -3,6 +3,9 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Dataset Size](https://img.shields.io/badge/Dataset-176%20Sheets-brightgreen.svg)
 ![GIS](https://img.shields.io/badge/GIS-QGIS%20%7C%20GDAL-orange.svg)
+[![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-yellow.svg)](https://huggingface.co/datasets/ibrahimatlgn/bangka-1930s-topographic-maps)
+
+📦 **Full ~6 GB dataset (GeoTIFFs + raw/cropped scans):** [huggingface.co/datasets/ibrahimatlgn/bangka-1930s-topographic-maps](https://huggingface.co/datasets/ibrahimatlgn/bangka-1930s-topographic-maps)
 
 ## Overview / Proje Hakkında
 
